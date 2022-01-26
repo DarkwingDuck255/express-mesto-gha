@@ -1,6 +1,5 @@
 const users = require('../models/user');
 const BadRequest = require('../utils/bad-request');
-// const DefaultError = require('../utils/default-error');
 const NotFound = require('../utils/not-found');
 
 const getUsers = (req, res) => {
@@ -17,8 +16,8 @@ const getUser = (req, res) => {
     .orFail(new NotFound('Пользователь не найден'))
     .then((result) => res.status(200).send(result))
     .catch((err) => {
-      if (err.name === 'NotFound') {
-        res.status(404).send({ message: 'Пользователь не найден' });
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Передан невалидный id' });
       } else {
         res.status(500).send({ message: 'На сервере произошла ошибка' });
       }
@@ -64,6 +63,8 @@ const patchUserAvatar = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные при изменении пользователя' });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Передан невалидный id' });
       } else {
         res.status(500).send({ message: 'На сервере произошла ошибка' });
       }
