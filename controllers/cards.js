@@ -14,12 +14,12 @@ const getCards = (req, res, next) => {
 
 const postCard = (req, res, next) => {
   const {
-    name, link, likes, createdAt,
+    name, link, likes,
   } = req.body;
   const owner = req.user._id;
 
   return cards.create({
-    name, link, likes, createdAt, owner,
+    name, link, likes, owner,
   })
     .then((result) => res.status(200).send(result))
     .catch((err) => {
