@@ -3,7 +3,7 @@ const BadRequest = require('../utils/bad-request');
 const NotFound = require('../utils/not-found');
 
 const getUsers = (req, res) => {
-  const { usersArray } = {};
+  const usersArray = {};
 
   return users.find(usersArray)
     .then((result) => res.status(200).send(result))

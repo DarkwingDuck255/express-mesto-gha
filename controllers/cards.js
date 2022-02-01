@@ -4,7 +4,7 @@ const NotFound = require('../utils/not-found');
 const DefaultError = require('../utils/default-error');
 
 const getCards = (req, res, next) => {
-  const { cardList } = {};
+  const cardList = {};
   return cards.find(cardList)
     .then((result) => res.status(200).send(result))
     .catch((err) => {
