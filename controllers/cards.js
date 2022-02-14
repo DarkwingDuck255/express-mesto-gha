@@ -2,14 +2,13 @@ const cards = require('../models/card');
 const BadRequest = require('../utils/bad-request');
 const NotFound = require('../utils/not-found');
 const DefaultError = require('../utils/default-error');
+const AccessDenied = require('../utils/access-denied');
 
 const getCards = (req, res, next) => {
   const cardList = {};
   return cards.find(cardList)
     .then((result) => res.status(200).send(result))
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const postCard = (req, res, next) => {
@@ -36,7 +35,14 @@ const deleteCard = (req, res, next) => {
 
   return cards.findByIdAndRemove(cardId)
     .orFail(new NotFound('Карточка в базе не найдена'))
-    .then((result) => res.status(200).send(result))
+    .then((result) => {
+      if (result.owner.toString() === req.user._id) {
+        cards.findByIdAndRemove(cardId)
+          .then(() => res.status(200).send(result));
+      } else {
+        next(new AccessDenied('Не достаточно прав'));
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Передан не верный id карточки'));
