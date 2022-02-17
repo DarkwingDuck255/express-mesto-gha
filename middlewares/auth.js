@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const SigninErr = require('../utils/signin-err');
 
 // const auth = (req, res) => {
 //   const token = req.cookies.webToken;
@@ -16,7 +17,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    res.status(403).send({ message: 'Нужна авторизация' });
+    next(new SigninErr('Нужна авторизация'));
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -26,7 +27,7 @@ module.exports = (req, res, next) => {
     payload = jwt.verify(token, 'DarkwingDuck255%');
     req.user = payload;
   } catch (err) {
-    res.status(403).send({ message: 'Нужна авторизация' });
+    next(new SigninErr('Нужна авторизация'));
   }
 
   next();

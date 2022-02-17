@@ -7,7 +7,7 @@ const loginValidity = celebrate({
   }),
 });
 
-const linkAddress = /(http:\/\/|https:\/\/)(www)*[a-z0-9\S]*/;
+const linkAddress = /^(https?:\/\/)?(www.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,3}(\/\S*)?$/;
 
 const signupValidity = celebrate({
   body: Joi.object().keys({

@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const isUrl = require('validator/lib/isURL');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcryptjs');
-const AccessDenied = require('../utils/access-denied');
-const NotFound = require('../utils/not-found');
+const SigninErr = require('../utils/signin-err');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -56,14 +55,14 @@ userSchema.statics.findOneByCredentials = function (email, password) {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new NotFound('Пользователь не найден');
+        throw new SigninErr('Пользователь не найден');
       }
 
       return bcrypt
         .compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new AccessDenied('Неправильный email или пароль');
+            throw new SigninErr('Неправильный email или пароль');
           }
 
           return user;

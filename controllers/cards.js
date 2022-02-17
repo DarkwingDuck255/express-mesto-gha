@@ -35,21 +35,14 @@ const deleteCard = (req, res, next) => {
 
   return cards.findByIdAndRemove(cardId)
     .orFail(new NotFound('Карточка в базе не найдена'))
-    .then((result) => {
-      if (result.owner.toString() === req.user._id) {
-        cards.findByIdAndRemove(cardId)
-          .then(() => res.status(200).send(result));
-      } else {
-        next(new AccessDenied('Не достаточно прав'));
+    .then((card) => {
+      if (!card.owner.equals(req.user._id)) {
+        return next(new AccessDenied('не удааляй карточку чужую!'));
       }
+      return card.remove()
+        .then(() => res.status(200).send({ message: 'Твоя карточка удалена, холоп))' }));
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Передан не верный id карточки'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 const putCardLike = (req, res, next) => {
@@ -59,7 +52,7 @@ const putCardLike = (req, res, next) => {
     .orFail(new NotFound('Передан несуществующий _id карточки.'))
     .then((result) => res.status(200).send(result))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные для постановки/снятиия лайка'));
       } else {
         next(new DefaultError('Произошла ошибка'));
@@ -70,11 +63,11 @@ const putCardLike = (req, res, next) => {
 const deleteCardLike = (req, res, next) => {
   const { cardId } = req.params;
 
-  return cards.findOneAndUpdate(cardId, { $pull: { likes: req.user._id } }, { new: true })
+  return cards.findOneAndUpdate({ _id: cardId }, { $pull: { likes: req.user._id } }, { new: true })
     .orFail(new NotFound('Передан несуществующий _id карточки.'))
     .then((result) => res.status(200).send(result))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные для постановки/снятиия лайка'));
       } else {
         next(new DefaultError('Произошла ошибка'));

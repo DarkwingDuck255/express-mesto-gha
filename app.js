@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const errors = require('celebrate');
 const routes = require('./routes');
 const errorHandler = require('./utils/error-handler');
 const NotFound = require('./utils/not-found');
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
   next(new NotFound('Не найден маршрут'));
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', () => {
