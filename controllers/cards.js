@@ -1,7 +1,7 @@
 const cards = require('../models/card');
 const BadRequest = require('../utils/bad-request');
 const NotFound = require('../utils/not-found');
-const DefaultError = require('../utils/default-error');
+// const DefaultError = require('../utils/default-error');
 const AccessDenied = require('../utils/access-denied');
 
 const getCards = (req, res, next) => {
@@ -31,9 +31,9 @@ const postCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
+  const { id } = req.params;
 
-  return cards.findByIdAndRemove(cardId)
+  return cards.findById(id)
     .orFail(new NotFound('Карточка в базе не найдена'))
     .then((card) => {
       if (!card.owner.equals(req.user._id)) {
@@ -46,31 +46,31 @@ const deleteCard = (req, res, next) => {
 };
 
 const putCardLike = (req, res, next) => {
-  const { cardId } = req.params;
+  const { id } = req.params;
 
-  return cards.findOneAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+  return cards.findOneAndUpdate({ _id: id }, { $addToSet: { likes: req.user._id } }, { new: true })
     .orFail(new NotFound('Передан несуществующий _id карточки.'))
     .then((result) => res.status(200).send(result))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные для постановки/снятиия лайка'));
       } else {
-        next(new DefaultError('Произошла ошибка'));
+        next(err);
       }
     });
 };
 
 const deleteCardLike = (req, res, next) => {
-  const { cardId } = req.params;
+  const { id } = req.params;
 
-  return cards.findOneAndUpdate({ _id: cardId }, { $pull: { likes: req.user._id } }, { new: true })
+  return cards.findOneAndUpdate({ _id: id }, { $pull: { likes: req.user._id } }, { new: true })
     .orFail(new NotFound('Передан несуществующий _id карточки.'))
     .then((result) => res.status(200).send(result))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные для постановки/снятиия лайка'));
       } else {
-        next(new DefaultError('Произошла ошибка'));
+        next(err);
       }
     });
 };

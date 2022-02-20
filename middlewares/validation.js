@@ -39,6 +39,12 @@ const cardsValididty = celebrate({
   }),
 });
 
+const idValidity = celebrate({
+  body: Joi.object().keys({
+    id: Joi.string().length(24).hex().required(),
+  }),
+});
+
 module.exports = {
-  loginValidity, signupValidity, aboutUserValidity, avatarLinkValidity, cardsValididty,
+  loginValidity, signupValidity, aboutUserValidity, avatarLinkValidity, cardsValididty, idValidity,
 };
