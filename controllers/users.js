@@ -7,12 +7,12 @@ const DefaultError = require('../utils/default-error');
 const EmailRegErr = require('../utils/email-reg-err');
 const SigninErr = require('../utils/signin-err');
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   const usersArray = {};
 
   return users.find(usersArray)
     .then((result) => res.status(200).send(result))
-    .catch(() => new DefaultError('На сервере произошла ошибка'));
+    .catch(next);
 };
 
 const getUser = (req, res, next) => {
@@ -24,7 +24,7 @@ const getUser = (req, res, next) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Передан невалидный id'));
       } else {
-        next(new DefaultError('На сервере произошла ошибка'));
+        next(err);
       }
     });
 };
@@ -36,7 +36,7 @@ const getCurrentUser = (req, res, next) => users.findById(req.user._id)
     if (err.name === 'ValidationError') {
       next(new BadRequest('Переданы некорректные данные при создании пользователя'));
     } else {
-      next(new DefaultError('На сервере произошла ошибка'));
+      next(err);
     }
   });
 
@@ -87,7 +87,7 @@ const patchUserAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные при изменении пользователя'));
       } else {
-        next(new DefaultError('На сервере произошла ошибка'));
+        next(err);
       }
     });
 };
