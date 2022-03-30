@@ -2,8 +2,8 @@ const allowedCors = [
   'https://api.darkwingduck.nomoredomains.xyz',
   'http://api.darkwingduck.nomoredomains.xyz',
   'localhost:3000',
-  'https://darkwingduck.nomoredomains.work/sign-up',
-  'http://darkwingduck.nomoredomains.work/sign-up',
+  'https://darkwingduck.nomoredomains.work',
+  'http://darkwingduck.nomoredomains.work',
 ];
 
 function cors(req, res, next) {
