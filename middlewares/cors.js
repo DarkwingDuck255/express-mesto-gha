@@ -6,7 +6,7 @@ const allowedCors = [
   'http://darkwingduck.nomoredomains.work',
 ];
 
-function cors(req, res, next) {
+const cors = (req, res, next) => {
   const { origin } = req.headers;
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
   const { method } = req;
@@ -23,6 +23,6 @@ function cors(req, res, next) {
     return res.end();
   }
   return next();
-}
+};
 
 module.exports = cors;
