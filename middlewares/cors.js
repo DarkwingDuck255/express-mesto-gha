@@ -1,7 +1,7 @@
 const allowedCors = [
   'https://api.darkwingduck.nomoredomains.xyz',
   'http://api.darkwingduck.nomoredomains.xyz',
-  'localhost:3000',
+  'http://localhost:3000',
   'https://darkwingduck.nomoredomains.work',
   'http://darkwingduck.nomoredomains.work',
 ];
