@@ -8,10 +8,21 @@ const NotFound = require('./utils/not-found');
 const { login, postUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signupValidity, loginValidity } = require('./middlewares/validation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(bodyParser.json());
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+app.use(requestLogger);
 
 app.post('/signin', loginValidity, login);
 app.post('/signup', signupValidity, postUser);
@@ -23,6 +34,8 @@ app.use(routes);
 app.use((req, res, next) => {
   next(new NotFound('Не найден маршрут'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
