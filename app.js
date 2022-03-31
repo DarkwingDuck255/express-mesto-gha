@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('./middlewares/cors');
 const routes = require('./routes');
 const errorHandler = require('./utils/error-handler');
 const NotFound = require('./utils/not-found');
@@ -9,7 +10,6 @@ const { login, postUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signupValidity, loginValidity } = require('./middlewares/validation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
