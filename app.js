@@ -10,7 +10,7 @@ const { login, postUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signupValidity, loginValidity } = require('./middlewares/validation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { enableCors, preReqCors } = require('./middlewares/cors');
+//const { enableCors, preReqCors } = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
