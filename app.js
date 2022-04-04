@@ -13,10 +13,14 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
+mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+  console.log('подключение к базе данных прошло успешно');
+});
+
 app.use(cors());
 app.use(bodyParser.json());
 
-app.options('*', cors());
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -40,10 +44,6 @@ app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
-
-mongoose.connect('mongodb://localhost:27017/mestodb', () => {
-  console.log('подключение к базе данных прошло успешно');
-});
 
 app.listen(PORT, () => {
   console.log(`серв запущен на ${PORT} порту`);
