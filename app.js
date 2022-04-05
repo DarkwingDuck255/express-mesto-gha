@@ -1,5 +1,5 @@
 const express = require('express');
-let cors = require('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
