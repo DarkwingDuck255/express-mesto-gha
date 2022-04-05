@@ -18,8 +18,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   console.log('подключение к базе данных прошло успешно');
 });
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
