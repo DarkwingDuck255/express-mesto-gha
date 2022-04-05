@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+const { cors } = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
 });
 
 app.use(bodyParser.json());
-app.use(cors);
+app.use(cors());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
