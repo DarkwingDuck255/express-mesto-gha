@@ -1,8 +1,8 @@
 const express = require('express');
+let cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-let cors = require('cors');
 const routes = require('./routes');
 const errorHandler = require('./utils/error-handler');
 const NotFound = require('./utils/not-found');
