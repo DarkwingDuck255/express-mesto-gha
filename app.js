@@ -1,8 +1,9 @@
 const express = require('express');
-const { cors } = require('cors');
+
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('./middlewares/cors');
 const routes = require('./routes');
 const errorHandler = require('./utils/error-handler');
 const NotFound = require('./utils/not-found');
