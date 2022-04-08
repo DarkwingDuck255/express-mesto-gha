@@ -7,6 +7,7 @@ const DefaultError = require('../utils/default-error');
 const EmailRegErr = require('../utils/email-reg-err');
 const SigninErr = require('../utils/signin-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 const getUsers = (req, res, next) => {
   const usersArray = {};
 
@@ -97,7 +98,7 @@ const login = (req, res, next) => {
 
   return users.findOneByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'DarkwingDuck255%', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       // res.cookie('webToken', token, {
       //   httpOnly: true,
       //   maxAge: '7d',

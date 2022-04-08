@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const SigninErr = require('../utils/signin-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -12,7 +14,7 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, 'DarkwingDuck255%');
+    payload = jwt.verify(token, `${NODE_ENV === 'production' ? JWT_SECRET : 'DarkwingDuck255%'}`);
     req.user = payload;
   } catch (err) {
     next(new SigninErr('Нужна авторизация'));

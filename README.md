@@ -1,4 +1,11 @@
 # Проект Mesto фронтенд + бэкенд
+Ссылка на фронт проекта:
+http://darkwingduck.nomoredomains.work
+Ссылка на апи:
+http://api.darkwingduck.nomoredomains.xyz/
+
+ip сервера:
+51.250.98.229
 
 ## Директории
 
