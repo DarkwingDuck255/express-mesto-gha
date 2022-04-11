@@ -98,14 +98,14 @@ const login = (req, res, next) => {
 
   return users.findOneByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'DarkwingDuck255%', { expiresIn: '7d' });
       // res.cookie('webToken', token, {
       //   httpOnly: true,
       //   maxAge: '7d',
       //   sameSite: true,
       // })
       // .send({ data: user.toJSON });
-      res.send({ token });
+      res.send({ token }, user);
     })
     .catch(() => {
       next(new SigninErr('Неверный логин или пароль'));

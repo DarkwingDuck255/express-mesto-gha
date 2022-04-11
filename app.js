@@ -38,11 +38,11 @@ app.use(auth);
 
 app.use(routes);
 
-app.use(errorLogger);
-
 app.use((req, res, next) => {
   next(new NotFound('Не найден маршрут'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
